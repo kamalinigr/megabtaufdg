@@ -1,0 +1,120 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+data includes neural-fragility and neural-excitability for each data set (AD and controls); Separate model per group.
+
+proc mixed data=work.data;
+class SUBJECT_ID ROI MOD SEX;
+model NEURAL_EXCITABILITY = NEURAL_FRAGILITY AGE /solution ;
+random  NEURAL_FRAGILITY int/ subject=SUBJECT_ID;
+repeated / subject=SUBJECT_ID ;
+RUN;
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+data includes neural-fragility and neural-excitability and Amyloid_SUVR for AD patients
+
+proc mixed data=work.data; 
+class SUBJECT_ID ROI;
+model AMYLOID_SUVR = NEURAL_EXCITABILITY NEURAL_FRAGILITY SCANTIME_DIFFERENCE_FROM_MEG AGE/solution;
+random NEURAL_EXCITABILITY NEURAL_FRAGILITY / subject=SUBJECT_ID;
+repeated / subject=SUBJECT_ID type=cs;
+RUN;
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+data includes neural-fragility and neural-excitability and Tau_SUVR for AD patients
+
+
+proc mixed data=work.data;
+class SUBJECT_ID ROI;
+model TAU_SUVR= NEURAL_EXCITABILITY NEURAL_FRAGILITY SCANTIME_DIFFERENCE_FROM_MEG AGE/solution; 
+random NEURAL_EXCITABILITY NEURAL_FRAGILITY / subject=SUBJECT_ID;
+repeated / subject=SUBJECT_ID type=cs;
+RUN;
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% 
+data includes neural-fragility and neural-excitability and FDG_SUVR for AD patients
+
+proc mixed data=work.data;
+class SUBJECT_ID ROI;
+model FDG_SUVR = NEURAL_EXCITABILITY NEURAL_FRAGILITY SCANTIME_DIFFERENCE_FROM_MEG AGE/solution; 
+random NEURAL_EXCITABILITY NEURAL_FRAGILITY / subject=SUBJECT_ID;
+repeated / subject=SUBJECT_ID(roi) type=cs;
+RUN;
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+data includes neural-fragility and neural-excitability and FDG_SUVR, AMYLOID_SUVR and Tau_SUVR for AD patients
+
+
+proc mixed data=work.data;
+class SUBJECT_ID ROI;
+model FDG_SUVR = NEURAL_EXCITABILITY NEURAL_FRAGILITY AMYLOID_SUVR TAU_SUVR SCANTIME_DIFFERENCE_FROM_MEG AGE /solution;
+random NEURAL_EXCITABILITY NEURAL_FRAGILITY AMYLOID_SUVR TAU_SUVR  / subject=SUBJECT_ID;
+repeated / subject=SUBJECT_ID(roi)type=CS;
+RUN;
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+data includes neural-fragility and neural-excitability and FDG_SUVR, and cortical_grey_matter_volumes for AD patients
+
+
+proc mixed data=work.data;
+class SUBJECT_ID ROI;
+model FDG_SUVR = NEURAL_EXCITABILITY NEURAL_FRAGILITY SCANTIME_DIFFERENCE_FROM_MEG AGE GREY_MATTER_VOLUME/solution; 
+random NEURAL_EXCITABILITY NEURAL_FRAGILITY GREY_MATTER_VOLUME/ subject=SUBJECT_ID;
+repeated / subject=SUBJECT_ID(roi) type=cs;
+RUN;
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+data includes neural-fragility and neural-excitability and FDG_SUVR, AMYLOID_SUVR, Tau_SUVR, and cortical_grey_matter_volumes for AD patients
+
+
+proc mixed data=work.data;
+class SUBJECT_ID ROI;
+model FDG_SUVR = NEURAL_EXCITABILITY NEURAL_FRAGILITY AMYLOID_SUVR TAU_SUVR SCANTIME_DIFFERENCE_FROM_MEG AGE GREY_MATTER_VOLUME/solution; 
+random NEURAL_EXCITABILITY NEURAL_FRAGILITY AMYLOID_SUVR TAU_SUVR GREY_MATTER_VOLUME / subject=SUBJECT_ID;
+repeated / subject=SUBJECT_ID(roi)type=CS;
+RUN;
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+data includes neural-fragility and neural-excitability and FDG_SUVR, and CDR for AD patients
+
+proc mixed data=work.data ;
+class SUBJECT_ID ROI CDR;
+model FDG_SUVR = NEURAL_EXCITABILITY NEURAL_FRAGILITY SCANTIME_DIFFERENCE_FROM_MEG AGE CDR CDR*NEURAL_EXCITABILITY CDR*NEURAL_FRAGILITY/solution ; 
+random NEURAL_EXCITABILITY NEURAL_FRAGILITY / subject=SUBJECT_ID;
+repeated / subject=SUBJECT_ID(roi) type=cs;
+RUN;
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%  
+data includes neural-fragility and neural-excitability and FDG_SUVR, Amyloid_SUVR, tau_SUVR, and CDR for AD patients
+
+
+proc mixed data=work.data ;
+class SUBJECT_ID ROI CDR;
+model FDG_SUVR = NEURAL_EXCITABILITY NEURAL_FRAGILITY AMYLOID_SUVR TAU_SUVR SCANTIME_DIFFERENCE_FROM_MEG AGE CDR CDR*NEURAL_EXCITABILITY CDR*NEURAL_FRAGILITY/solution; 
+random NEURAL_EXCITABILITY NEURAL_FRAGILITY AMYLOID_SUVR TAU_SUVR / subject=SUBJECT_ID;
+repeated / subject=SUBJECT_ID(roi);
+RUN;
+
+
